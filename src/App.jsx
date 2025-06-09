@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
-const apiUrl = "https://api.themoviedb.org/3";
-const apiKey = "1126ff6465d7aee9aa36446b9a95f5d5";
-const language = "it-IT";
+const apiUrl = import.meta.env.VITE_THEMOVIEDB_API_URL;
+const apiKey = import.meta.env.VITE_THEMOVIEDB_API_KEY;
+const language = import.meta.env.VITE_APP_LANGUAGE;
 
 export default function App() {
   const [searchedTerm, setSearchedTerm] = useState("");
@@ -23,8 +23,6 @@ export default function App() {
 
     const queryParams = new URLSearchParams(searchData).toString();
     axios.get(`${apiUrl}/search/movie?${queryParams}`).then((res) => {
-      console.log(res);
-
       const result = res.data.results.map((movie) => ({
         id: movie.id,
         title: movie.title,
@@ -52,7 +50,7 @@ export default function App() {
 
       <main>
         {movies.map((movie) => (
-          <ul>
+          <ul key={movie.id}>
             <li>Titolo: {movie.title}</li>
             <li>Titolo originale: {movie.originalTitle}</li>
             <li>Voto: {movie.rating}</li>
